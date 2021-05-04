@@ -13,7 +13,7 @@ class _PrePageState extends State<PrePage> {
       title: 'Fire All',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          accentColor: Colors.blueGrey, primaryColor: Colors.blueAccent),
+          accentColor: Colors.blueGrey, primaryColor: Colors.blue[800]),
       home: SplashScreen(),
     );
   }

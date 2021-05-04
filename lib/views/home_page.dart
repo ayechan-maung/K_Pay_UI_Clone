@@ -1,6 +1,6 @@
-import 'package:FireAll/views/balance_part/balance.dart';
-import 'package:FireAll/views/first_transition/wallet_transition.dart';
-import 'package:FireAll/views/promotion/promotion.dart';
+import 'package:FireAll/views/life/life_page.dart';
+import 'package:FireAll/views/my_page/my_profile.dart';
+import 'package:FireAll/views/walllet.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,113 +9,85 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final titleSize =
-      TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white);
+  List<Widget> tabWidget;
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    tabWidget = [WalletPage(), LifePage(), MyProfile()];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: ListView(
-          children: [
-            // Container(
-            //   height: MediaQuery.of(context).padding.top,
-            // ),
-            heading(),
-            BalancePart(),
-            paymentPart(),
-            WalletTransition(),
-            Promotion()
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget heading() {
-    return Container(
-      height: 100,
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      decoration: BoxDecoration(
-          color: Colors.blue[800],
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(40))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
         children: [
-          Text(
-            'ACMPay',
-            style: titleSize,
+          Expanded(
+            child: tabWidget[currentPage],
           ),
-          Spacer(),
-          notiIcon(
-            icon: Icons.search,
-          ),
-          SizedBox(
-            width: 8.0,
-          ),
-          notiIcon(icon: Icons.notifications_none_outlined)
         ],
       ),
+      bottomNavigationBar: bottomApp(),
     );
   }
 
-  Widget notiIcon({IconData icon, VoidCallback onPressed}) {
-    return Container(
-      width: 35,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle, color: Colors.black54.withOpacity(0.2)),
-      child: IconButton(
-          icon: Icon(
-            icon,
-            color: Colors.white70,
-            size: 22,
-          ),
-          onPressed: onPressed),
-    );
-  }
-
-  Widget paymentPart() {
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      width: width,
-      // height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          scanRec(
-              title: 'Scan and Pay',
-              width: width * 0.46,
-              icon: Icon(
-                Icons.qr_code_scanner,
-                color: Colors.blue,
-              )),
-          scanRec(
-              title: 'Receive',
-              width: width * 0.46,
-              icon: Icon(
-                Icons.qr_code,
-                color: Colors.blue,
-              ))
-        ],
-      ),
-    );
-  }
-
-  Widget scanRec(
-      {Icon icon, String title, VoidCallback onPressed, double width}) {
-    return Card(
-      elevation: 3.0,
+  Widget bottomApp() {
+    return BottomAppBar(
       child: Container(
-        padding: EdgeInsets.all(12.0),
-        width: width,
+        height: 50,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            icon,
-            SizedBox(
-              width: 8,
-            ),
-            Text(title)
+            tabButton(
+                title: 'Wallet',
+                icon: Icons.account_balance_wallet_outlined,
+                iconColor: currentPage == 0 ? Colors.blue[900] : Colors.grey,
+                onPressed: () {
+                  setState(() {
+                    currentPage = 0;
+                  });
+                }),
+            tabButton(
+                title: 'Life',
+                icon: Icons.live_help_outlined,
+                iconColor: currentPage == 1 ? Colors.blue[900] : Colors.grey,
+                onPressed: () {
+                  setState(() {
+                    currentPage = 1;
+                  });
+                }),
+            tabButton(
+                title: 'My',
+                icon: Icons.person,
+                iconColor: currentPage == 2 ? Colors.blue[900] : Colors.grey,
+                onPressed: () {
+                  setState(() {
+                    currentPage = 2;
+                  });
+                }),
           ],
         ),
+      ),
+    );
+  }
+
+  MaterialButton tabButton(
+      {VoidCallback onPressed, String title, IconData icon, Color iconColor}) {
+    return MaterialButton(
+      onPressed: onPressed,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(
+            icon,
+            color: iconColor,
+          ),
+          Text(
+            title,
+            style: TextStyle(color: iconColor),
+          )
+        ],
       ),
     );
   }
