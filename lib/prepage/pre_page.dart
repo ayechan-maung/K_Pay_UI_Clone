@@ -10,7 +10,7 @@ class _PrePageState extends State<PrePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fire All',
+      title: 'UI Clone',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           accentColor: Colors.blueGrey, primaryColor: Colors.blue[800]),
